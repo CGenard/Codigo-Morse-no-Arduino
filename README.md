@@ -1,39 +1,39 @@
-# Morse-code-on-Arduino
-Morse code made in the C language, made to run on Arduino.
+# Código Morse no Arduino
+Código Morse feito na linguagem C, feito para rodar em Arduino.
 
-//Converts characters to char data
-char charecters[] = {'a', 'b', 'c', 'd', 'e', ​​'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x ', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '"', '$', '&', '(', ')', '_', '+', '=', '-', ':', ';', '@ ', '\'', ',', '.', '/', '?', ' '};
+//Converte caracteres em dados char
+caracteres char[] = {'a', 'b', 'c', 'd', 'e', ​​​​'f', 'g', 'h', 'i', 'j', 'k ', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9 ', '!', '"', '$', '&', '(', ')', '_', '+', '=', '-', ':', ';', '@ ', '\'', ',', '.', '/', '?', ' '};
 char* morse[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", " ....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".- -.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-.. -", "-.--", "--..", "-----", ".----", "..---", "...--", " ....-", ".....", "-....", "--...", "---..", "----.", "-· -·--", "·-··-·", "···-··-", "·-···", "-·--·", "-·--·-", "··--·-", "·-·-·", "-···-", "-····-", "---···", "-·-·-· ", "·--·-·", "·----·", "--··--", "·-·-·-", "-··-·", "··- -··", " "};
-int len ​​= 55;
+int len=55;
 
-//instance on which pin the buzzer will be located
-int buzzerpin = 12;
+//instância em qual pino o buzzer estará localizado
+int campainha = 12;
 
-int dotLen = 150; // You can adjust the speed of the beeps here
-int dashLen = dotLen * 3;
-int elemGap = dotLen;
+int dotLen = 150; // Você pode ajustar a velocidade dos bipes aqui
+int dashLen = pontoLen * 3;
+int elemGap = pontoLen;
 int charGap = dotLen * 2;
-int Space = dotLen * 6;
+int Espaço = pontoLen * 6;
 
-char charDelimiter = '@'; // Use this to separate characters
+char charDelimitador = '@'; // Use isto para separar caracteres
 
-String inputString = "";
-boolean stringComplete = false;
+String entradaString = "";
+booleano stringComplete = false;
 
-void setup() {
+configuração vazia() {
  Serial.begin(9600);
- pinMode(buzzerpin, OUTPUT);
- inputString.reserve(200);
+ pinMode(buzzerpin, SAÍDA);
+ inputString.reserva(200);
 }
 
-void loop() {
+loop vazio() {
  serialEvent();
  if (stringComplete) {
- Serial.println(inputString); //prints the message you wrote on the monitor
- String code = toMorse(inputString);
- Display(code);
- inputString = "";
- stringComplete = false;
+ Serial.println(inputString); //imprime a mensagem que você escreveu no monitor
+ Código de string = toMorse(inputString);
+ Exibir(código);
+ stringString = "";
+ stringComplete = falso;
  }
 }
 
@@ -42,69 +42,69 @@ String toMorse(String inputString) {
  int inputString_len = inputString.length() + 1;
  char char_array[inputString_len];
  inputString.toCharArray(char_array, inputString_len);
- String finalcode = "";
+ String código final = "";
  for (int i = 0; i < inputString_len; i++) {
- for (int n = 0; n < len; n++) {
- if (char_array[i] == charecters[n] )
+ for (int n = 0; n <len; n++) {
+ if (char_array[i] == caracteres[n] )
  {
- finalcode += morse[n];
- finalcode += charDelimiter;
+ código final += morse[n];
+ código final += charDelimiter;
  }
  }
  }
- return finalcode;
+ retornar código final;
 }
 
-String toString(String code) {
+String toString(String código) {
 
- return "";
+ retornar "";
 }
 
-void Display(String code) {
+void Exibição(Código de string) {
  int code_len = code.length() + 1;
- char code_array[code_len];
+ char código_array[código_len];
  code.toCharArray(code_array, code_len);
  for (int i = 0; i < code_len; i++) {
  if (code_array[i] == '.')
  {
 
- digitalWrite(buzzerpin, HIGH);
- delay(dotLen);
+ digitalWrite(buzzerpin, ALTO);
+ atraso(pontoLen);
 
  digitalWrite(buzzerpin, LOW);
- delay(elemGap);
+ atraso(elemGap);
  Serial.print(code_array[i]);
  }
- else if (code_array[i] == '-')
+ senão if (code_array[i] == '-')
  {
 
- digitalWrite(buzzerpin, HIGH);
- delay(dashLen);
+ digitalWrite(buzzerpin, ALTO);
+ atraso(dashLen);
 
  digitalWrite(buzzerpin, LOW);
- delay(elemGap);
+ atraso(elemGap);
  Serial.print(code_array[i]);
  }
- else if (code_array[i] == ' ')
+ senão if (code_array[i] == ' ')
  {
- delay(Space);
+ atraso(Espaço);
  Serial.print(" ");
  }
- else if (code_array[i] == charDelimiter)
+ senão if (code_array[i] == charDelimiter)
  {
- delay(charGap);
+ atraso(charGap);
  Serial.print(" ");
  }
  }
  Serial.println();
- Serial.println("Ready");
+ Serial.println("Pronto");
 }
-void serialEvent() {
- while (Serial.available()) {
+void eventoserial() {
+ enquanto (Serial.available()) {
  char inChar = (char)Serial.read();
  inputString += inChar;
  if (inChar == '\n') {
- stringComplete = true;
+ stringComplete = verdadeiro;
  }
  }
 }
